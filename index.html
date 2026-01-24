@@ -5,277 +5,937 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pinatra SMP | Minecraft Sunucusu</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --primary: #f97316;
+      --primary-dark: #ea580c;
+      --secondary: #facc15;
+      --dark: #0f172a;
+      --darker: #020617;
+      --light: #f8fafc;
+      --success: #22c55e;
+      --danger: #ef4444;
+    }
+    
     body {
       font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at top, #ffedd5 0%, #fdba74 30%, #f97316 60%, #9a3412 100%);
-      color: #f9fafb;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #020617 100%);
+      color: var(--light);
       min-height: 100vh;
-      opacity: 0;
-      animation: pageFadeIn 0.9s ease forwards;
+      overflow-x: hidden;
     }
-
-    @keyframes pageFadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(12px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    
+    /* Animated Background */
+    .bg-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
     }
+    
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--primary);
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: float 15s infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.3; }
+      90% { opacity: 0.3; }
+      100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+    }
+    
+    /* Header & Navigation */
     header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 40px;
+      padding: 15px 40px;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(249, 115, 22, 0.2);
+      z-index: 1000;
+      transition: all 0.3s ease;
     }
-    header strong {
-      color: #111827;
-      font-size: 26px;
+    
+    header.scrolled {
+      padding: 10px 40px;
+      background: rgba(15, 23, 42, 0.98);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo-icon {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4); }
+      50% { box-shadow: 0 0 20px 10px rgba(249, 115, 22, 0); }
+    }
+    
+    .logo strong {
+      font-size: 24px;
       font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
+    
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
     nav a {
-      color: #111827;
-      margin: 0 12px;
+      color: var(--light);
       text-decoration: none;
       font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
-    nav a:hover { color: #7c2d12; }
-    nav a:hover { color: #fff; }
+    
+    nav a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+    
+    nav a:hover::before {
+      width: 80%;
+    }
+    
+    nav a:hover {
+      color: var(--primary);
+    }
+    
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    
     .btn {
-      padding: 12px 22px;
-      border-radius: 14px;
+      padding: 12px 24px;
+      border-radius: 12px;
       border: none;
       font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
+    }
+    
+    .btn-discord {
+      background: #5865F2;
+      color: white;
+      box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3);
+    }
+    
+    .btn-discord:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(88, 101, 242, 0.4);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+    }
+    
+    /* Mobile Menu */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--light);
+      font-size: 24px;
       cursor: pointer;
     }
-    .btn-green {
-      background: linear-gradient(135deg, #fb923c, #ef4444);
-      color: #2a0a05;
-    }
-    .btn-blue {
-      background: linear-gradient(135deg, #f97316, #dc2626);
-      color: #fff;
-    }
+    
+    /* Hero Section */
     .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      padding: 60px 20px;
-      background: linear-gradient(180deg, #0b0f19, #1f2933);
-      margin: 30px auto;
+      padding: 120px 20px 60px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .hero-content {
       max-width: 900px;
-      border-radius: 24px;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.45);
-      animation: heroPop 1s ease-out 0.2s both;
     }
-    .status {
-      display: inline-block;
-      padding: 10px 18px;
-      border-radius: 999px;
-      background: rgba(22,163,74,0.2);
-      color: #22c55e;
+    
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border-radius: 50px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: var(--success);
+      font-weight: 600;
       margin-bottom: 30px;
-      font-weight: 700;
+      animation: fadeInUp 0.6s ease;
     }
+    
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: blink 1.5s infinite;
+    }
+    
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
     h1 {
-      font-size: 52px;
+      font-size: clamp(48px, 8vw, 80px);
+      font-weight: 800;
       line-height: 1.1;
-      margin-bottom: 16px;
-      color: #f9fafb;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.6s ease 0.2s both;
     }
-    h1 span:first-child { color: #fb923c; }
-    h1 span:last-child { color: #facc15; }
-    .subtitle {
-      max-width: 640px;
-      margin: 0 auto 30px;
-      color: #e5e7eb;
-      font-size: 16px;
+    
+    h1 .gradient {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
-    .actions {
+    
+    .hero-subtitle {
+      font-size: 18px;
+      color: #94a3b8;
+      max-width: 600px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+      animation: fadeInUp 0.6s ease 0.4s both;
+    }
+    
+    .hero-actions {
       display: flex;
       justify-content: center;
       gap: 16px;
-      margin-bottom: 40px;
       flex-wrap: wrap;
+      margin-bottom: 50px;
+      animation: fadeInUp 0.6s ease 0.6s both;
     }
-    .ip-box {
+    
+    .ip-container {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      padding: 14px 20px;
-      background: linear-gradient(135deg, rgba(249,115,22,0.25), rgba(220,38,38,0.25));
+      gap: 15px;
+      padding: 20px 30px;
+      background: rgba(249, 115, 22, 0.1);
+      border: 1px solid rgba(249, 115, 22, 0.3);
       border-radius: 16px;
-      font-size: 18px;
-      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: fadeInUp 0.6s ease 0.8s both;
     }
-    .ip-box code { color: #facc15; }
-    footer {
-      text-align: center;
-      padding: 30px;
-      color: #111827;
+    
+    .ip-container:hover {
+      background: rgba(249, 115, 22, 0.2);
+      transform: scale(1.02);
+    }
+    
+    .ip-label {
+      color: #94a3b8;
       font-size: 14px;
     }
+    
+    .ip-address {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--secondary);
+      font-family: 'Courier New', monospace;
+    }
+    
+    .copy-icon {
+      background: var(--primary);
+      padding: 10px;
+      border-radius: 8px;
+      color: white;
+    }
+    
+    /* Stats Section */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 800px;
+      margin: 60px auto 0;
+      animation: fadeInUp 0.6s ease 1s both;
+    }
+    
+    .stat-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 25px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-5px);
+    }
+    
+    .stat-icon {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    
+    .stat-label {
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    
+    /* Features Section */
+    .features {
+      padding: 100px 20px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    
+    .section-title h2 {
+      font-size: 42px;
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
+    
+    .section-title p {
+      color: #94a3b8;
+      font-size: 18px;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .feature-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 35px;
+      transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--primary);
+      transform: translateY(-8px);
+    }
+    
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 20px;
+    }
+    
+    .feature-card h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+    
+    .feature-card p {
+      color: #94a3b8;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    
+    /* Game Modes Section */
+    .game-modes {
+      padding: 100px 20px;
+      background: rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .modes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .mode-card {
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(234, 88, 12, 0.05));
+      border: 1px solid rgba(249, 115, 22, 0.2);
+      border-radius: 24px;
+      padding: 40px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    
+    .mode-card:hover {
+      transform: scale(1.03);
+      border-color: var(--primary);
+    }
+    
+    .mode-icon {
+      font-size: 50px;
+      margin-bottom: 20px;
+    }
+    
+    .mode-card h3 {
+      font-size: 26px;
+      margin-bottom: 15px;
+      color: var(--primary);
+    }
+    
+    .mode-card p {
+      color: #94a3b8;
+      line-height: 1.7;
+    }
+    
+    /* Footer */
+    footer {
+      padding: 50px 20px;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+    
+    .footer-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+    
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    
+    .social-links a {
+      width: 45px;
+      height: 45px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--light);
+      font-size: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .social-links a:hover {
+      background: var(--primary);
+      transform: translateY(-3px);
+    }
+    
+    .copyright {
+      color: #64748b;
+      font-size: 14px;
+    }
+    
+    /* Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 20px;
+    }
+    
+    .modal-content {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 24px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      animation: modalIn 0.3s ease;
+    }
+    
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    .modal-content h2 {
+      font-size: 28px;
+      margin-bottom: 25px;
+      color: var(--primary);
+    }
+    
+    .modal-content p {
+      color: #94a3b8;
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+    
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 25px;
+    }
+    
+    /* Toast */
     .toast {
       position: fixed;
       bottom: 30px;
       left: 50%;
-      transform: translateX(-50%) translateY(10px);
-      background: linear-gradient(135deg, #fb923c, #dc2626);
-      color: #2a0a05;
-      padding: 14px 22px;
+      transform: translateX(-50%) translateY(100px);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 16px 28px;
       border-radius: 14px;
       font-weight: 600;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      box-shadow: 0 10px 40px rgba(249, 115, 22, 0.4);
       opacity: 0;
-      pointer-events: none;
-      z-index: 2000;
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 3000;
+      transition: all 0.4s ease;
     }
+    
     .toast.show {
       opacity: 1;
-      transform: translateX(-50%) translateY(-10px);
+      transform: translateX(-50%) translateY(0);
     }
-      .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-    .modal-content {
-      background: #111827;
-      padding: 30px;
-      border-radius: 20px;
-      max-width: 420px;
-      width: 90%;
-      text-align: center;
-    }
-    .modal-content h2 { margin-bottom: 15px; }
-    .modal-content p { margin-bottom: 10px; color: #e5e7eb; }
-    .close-btn {
-      margin-top: 15px;
-      background: linear-gradient(135deg, #f97316, #dc2626);
-      color: #fff;
-    }
-    .close-btn:hover {
-      filter: brightness(1.1);
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 20px;
+      }
+      
+      nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(15, 23, 42, 0.98);
+        flex-direction: column;
+        padding: 20px;
+        border-bottom: 1px solid rgba(249, 115, 22, 0.2);
+      }
+      
+      nav.active {
+        display: flex;
+      }
+      
+      .nav-buttons {
+        display: none;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .hero {
+        padding: 100px 20px 50px;
+      }
+      
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .modes-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <header>
-    <div style="display:flex; align-items:center; gap:12px;">
-      
+  <!-- Animated Background -->
+  <div class="bg-particles" id="particles"></div>
+  
+  <!-- Header -->
+  <header id="header">
+    <div class="logo">
+      <div class="logo-icon">⛏️</div>
       <strong>Pinatra SMP</strong>
     </div>
-    <nav>
-      <a href="#" onclick="openModal('joinModal')">Nasıl Katılırım?</a>
-      <a href="#" onclick="openModal('rulesModal')">Kurallar</a>
-    </nav>
-    <button class="btn btn-green" onclick="copyIP()">Sunucuya Katıl</button>
-  </header>
-
-  <section class="hero">
-    <div id="serverStatus" class="status">⏳ Sunucu durumu kontrol ediliyor...</div>
-    <h1>
-      <br>
-      <span>Pinatra</span><br><span>SMP</span>
-    </h1>
-    <p class="subtitle">
-      Türkiye'nin en eğlenceli Minecraft sunucusu. 2 adet oyun modu ve güçlü bir topluluk seni bekliyo
-    </p>
     
-    <div class="actions">
-      <button class="btn btn-green" onclick="copyIP()">Macereye Başla</button>
-      <a href="https://rapor.pinatra.qzz.io" target="_blank"><button class="btn btn-blue">Oyuncu Raporla</button></a>
+    <nav id="nav">
+      <a href="#features"><i class="fas fa-star"></i> Özellikler</a>
+      <a href="#modes"><i class="fas fa-gamepad"></i> Oyun Modları</a>
+      <a href="#" onclick="openModal('joinModal')"><i class="fas fa-sign-in-alt"></i> Nasıl Katılırım?</a>
+      <a href="#" onclick="openModal('rulesModal')"><i class="fas fa-scroll"></i> Kurallar</a>
+    </nav>
+    
+    <div class="nav-buttons">
+      <button class="btn btn-primary" onclick="copyIP()">
+        <i class="fas fa-play"></i> Sunucuya Katıl
+      </button>
     </div>
-    <div class="ip-box" onclick="copyIP()" style="cursor:pointer">
-      Sunucu IP: <code>oyna.pinatra.qzz.io</code>
-    </div>
-    <div class="ip-box" style="margin: 16px auto 30px; font-size: 14px; opacity: 0.9; background: rgba(99,102,241,0.12)">
-      Desteklenen Sürümler (Java): <code>1.16.5 – 1.21.11</code>
+    
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+      <i class="fas fa-bars"></i>
+    </button>
+  </header>
+  
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="status-badge" id="serverStatus">
+        <div class="status-dot"></div>
+        <span>Sunucu durumu kontrol ediliyor...</span>
+      </div>
+      
+      <h1>
+        <span class="gradient">Pinatra</span><br>
+        SMP
+      </h1>
+      
+      <p class="hero-subtitle">
+        Türkiye'nin en eğlenceli Minecraft sunucusu. 2 farklı oyun modu, aktif topluluk ve unutulmaz maceralar seni bekliyor!
+      </p>
+      
+      <div class="hero-actions">
+        <button class="btn btn-primary" onclick="copyIP()">
+          <i class="fas fa-rocket"></i> Maceraya Başla
+        </button>
+        <a href="https://rapor.pinatra.qzz.io" target="_blank" class="btn btn-outline">
+          <i class="fas fa-flag"></i> Oyuncu Raporla
+        </a>
+      </div>
+      
+      <div class="ip-container" onclick="copyIP()">
+        <div>
+          <div class="ip-label">Sunucu IP Adresi</div>
+          <div class="ip-address">oyna.pinatra.qzz.io</div>
+        </div>
+        <div class="copy-icon">
+          <i class="fas fa-copy"></i>
+        </div>
+      </div>
+      
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-value" id="playerCount">0</div>
+          <div class="stat-label">Aktif Oyuncu</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🎮</div>
+          <div class="stat-value">2</div>
+          <div class="stat-label">Oyun Modu</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <div class="stat-value">1.16-1.21</div>
+          <div class="stat-label">Desteklenen Sürümler</div>
+        </div>
+      </div>
     </div>
   </section>
-
+  
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="section-title">
+      <h2>Neden <span class="gradient">Pinatra SMP</span>?</h2>
+      <p>En iyi Minecraft deneyimi için gereken her şey burada</p>
+    </div>
+    
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Yüksek Performans</h3>
+        <p>Lag olmadan, akıcı oyun deneyimi için optimize edilmiş sunucu altyapısı.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Anti-Cheat Koruması</h3>
+        <p>Gelişmiş hile önleme sistemi ile adil ve güvenli oyun ortamı.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👨‍👩‍👧‍👦</div>
+        <h3>Aktif Topluluk</h3>
+        <p>Yardımsever ve eğlenceli oyunculardan oluşan büyüyen bir topluluk.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎁</div>
+        <h3>Özel Etkinlikler</h3>
+        <p>Haftalık turnuvalar, ödüllü yarışmalar ve özel günler.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3>7/24 Destek</h3>
+        <p>Her an yardım alabilirsiniz, sorularınız için buradayız.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔄</div>
+        <h3>Düzenli Güncellemeler</h3>
+        <p>Yeni içerikler, özellikler ve iyileştirmeler sürekli ekleniyor.</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Game Modes Section -->
+  <section class="game-modes" id="modes">
+    <div class="section-title">
+      <h2>Oyun <span class="gradient">Modları</span></h2>
+      <p>İstediğin maceraya hemen başla</p>
+    </div>
+    
+    <div class="modes-grid">
+      <div class="mode-card">
+        <div class="mode-icon">🏰</div>
+        <h3>Survival SMP</h3>
+        <p>Klasik hayatta kalma deneyimi. Kendi alanını kur, arkadaşlarınla oyna, büyük projeler inşa et ve maceraya atıl!</p>
+      </div>
+      <div class="mode-card">
+        <div class="mode-icon">⚔️</div>
+        <h3>PvP Arena</h3>
+        <p>Yeteneklerini test et! Farklı arena modlarında rakiplerine karşı savaş ve sıralamalarda yüksel.</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Footer -->
   <footer>
-    © 2026 Pinatra SMP — Tüm Hakları Saklıdır
-    </footer>
-
-  <!-- Nasıl Katılırım Modal -->
+    <div class="social-links">
+      <a href="#" title="Instagram">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+    
+    <div class="footer-links">
+      <a href="#" onclick="openModal('joinModal')">Nasıl Katılırım?</a>
+      <a href="#" onclick="openModal('rulesModal')">Kurallar</a>
+      <a href="https://rapor.pinatra.qzz.io" target="_blank">Oyuncu Raporla</a>
+    </div>
+    
+    <p class="copyright">© 2026 Pinatra SMP — Tüm Hakları Saklıdır</p>
+  </footer>
+  
+  <!-- Modals -->
   <div id="joinModal" class="modal">
     <div class="modal-content">
-      <h2>Nasıl Katılırım?</h2>
-      <p>1. Minecraft Java sürümünü aç</p>
-      <p>2. Çok Oyunculu → Sunucu Ekle</p>
-      <p>3. Sunucu IP: <strong>oyna.pinatra.qzz.io</strong></p>
-      <button class="btn btn-green" onclick="copyIP()">IP'yi Kopyala</button>
-      <button class="btn close-btn" onclick="closeModal()">Kapat</button>
+      <h2><i class="fas fa-sign-in-alt"></i> Nasıl Katılırım?</h2>
+      <p><strong>1.</strong> Minecraft Java sürümünü aç</p>
+      <p><strong>2.</strong> Çok Oyunculu → Sunucu Ekle</p>
+      <p><strong>3.</strong> Sunucu IP: <strong style="color: var(--secondary)">oyna.pinatra.qzz.io</strong></p>
+      <p><strong>4.</strong> Kaydet ve Bağlan!</p>
+      <div class="modal-buttons">
+        <button class="btn btn-primary" onclick="copyIP()">
+          <i class="fas fa-copy"></i> IP'yi Kopyala
+        </button>
+        <button class="btn btn-outline" onclick="closeModal()">Kapat</button>
+      </div>
     </div>
   </div>
-
-  <!-- Kurallar Modal -->
+  
   <div id="rulesModal" class="modal">
     <div class="modal-content">
-      <h2>Sunucu Kuralları</h2>
-      <p>• Hile (hack, client, mod) kullanmak kesinlikle yasaktır.</p>
-      <p>• Küfür, hakaret, aşağılayıcı ve rahatsız edici konuşmalar yasaktır.</p>
-      <p>• Sunucudaki açıkları (bug) bilerek kullanmak veya yaymak yasaktır.</p>
-      <p>• Reklam yapmak veya link paylaşmak yetki olmadan yasaktır.</p>
-      <p>• Sohbeti spamlamak veya flood yapmak yasaktır.</p>
-      <p>• Yetkililere saygısızlık etmek yasaktır.</p>
-      <p>• Tehdit, korkutma veya taciz edici davranışlar yasaktır.</p>
-      <p><strong>Kurallara uymayan oyuncular uyarı, mute, kick veya ban cezası alabilir.</strong></p>
-      <button class="btn close-btn" onclick="closeModal()">Kapat</button>
+      <h2><i class="fas fa-scroll"></i> Sunucu Kuralları</h2>
+      <p>❌ Hile (hack, client, mod) kullanmak kesinlikle yasaktır.</p>
+      <p>❌ Küfür, hakaret ve rahatsız edici konuşmalar yasaktır.</p>
+      <p>❌ Bug kullanmak veya yaymak yasaktır.</p>
+      <p>❌ İzinsiz reklam yapmak yasaktır.</p>
+      <p>❌ Spam ve flood yasaktır.</p>
+      <p>❌ Yetkililere saygısızlık yasaktır.</p>
+      <p style="margin-top: 15px; color: var(--danger)"><strong>⚠️ Kurallara uymayan oyuncular ceza alır!</strong></p>
+      <div class="modal-buttons">
+        <button class="btn btn-outline" onclick="closeModal()">Anladım</button>
+      </div>
     </div>
   </div>
-
-
-  <div id="toast" class="toast">✅ IP panoya kopyalandı: oyna.pinatra.qzz.io</div>
-
+  
+  <div id="toast" class="toast">✅ IP panoya kopyalandı!</div>
+  
   <script>
-    // === SUNUCU DURUM KONTROLÜ (Aternos uyumlu) ===
+    // Create Particles
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 15 + 's';
+      particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+      particlesContainer.appendChild(particle);
+    }
+    
+    // Header Scroll Effect
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+    
+    // Mobile Menu Toggle
+    function toggleMobileMenu() {
+      const nav = document.getElementById('nav');
+      nav.classList.toggle('active');
+    }
+    
+    // Server Status Check
     const SERVER_IP = 'pinatra.aternos.me';
     const STATUS_EL = document.getElementById('serverStatus');
-
+    const PLAYER_COUNT = document.getElementById('playerCount');
+    
     async function checkServerStatus() {
       try {
         const res = await fetch(`https://api.mcsrvstat.us/2/${SERVER_IP}`);
         const data = await res.json();
-
+        
         if (data.online) {
           const online = data.players?.online ?? 0;
           const max = data.players?.max ?? '?';
-          STATUS_EL.textContent = `🟢 Sunucu Aktif — ${online}/${max} oyuncu`;
-          STATUS_EL.style.background = 'rgba(22,163,74,0.2)';
+          STATUS_EL.innerHTML = `<div class="status-dot"></div><span>Sunucu Aktif — ${online}/${max} oyuncu</span>`;
+          STATUS_EL.style.background = 'rgba(34, 197, 94, 0.15)';
+          STATUS_EL.style.borderColor = 'rgba(34, 197, 94, 0.3)';
           STATUS_EL.style.color = '#22c55e';
+          PLAYER_COUNT.textContent = online;
         } else {
-          STATUS_EL.textContent = '🔴 Sunucu Kapalı';
-          STATUS_EL.style.background = 'rgba(239,68,68,0.15)';
-          STATUS_EL.style.color = '#f87171';
+          STATUS_EL.innerHTML = `<div class="status-dot" style="background:#ef4444"></div><span>Sunucu Kapalı</span>`;
+          STATUS_EL.style.background = 'rgba(239, 68, 68, 0.15)';
+          STATUS_EL.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+          STATUS_EL.style.color = '#ef4444';
+          PLAYER_COUNT.textContent = '0';
         }
       } catch (e) {
-        STATUS_EL.textContent = '⚠️ Sunucu durumu alınamadı';
-        STATUS_EL.style.background = 'rgba(234,179,8,0.15)';
-        STATUS_EL.style.color = '#fde047';
+        STATUS_EL.innerHTML = `<div class="status-dot" style="background:#eab308"></div><span>Durum alınamadı</span>`;
+        STATUS_EL.style.background = 'rgba(234, 179, 8, 0.15)';
+        STATUS_EL.style.borderColor = 'rgba(234, 179, 8, 0.3)';
+        STATUS_EL.style.color = '#eab308';
       }
     }
-
-    // Sayfa açılınca kontrol et
+    
     checkServerStatus();
-
-    // === IP KOPYALAMA SİSTEMİ ===
-
+    setInterval(checkServerStatus, 60000);
+    
+    // Toast Notification
     function showToast(message) {
       const toast = document.getElementById('toast');
       toast.textContent = message;
       toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2500);
+      setTimeout(() => toast.classList.remove('show'), 3000);
     }
-
+    
+    // Copy IP
+    function copyIP() {
+      const ip = 'oyna.pinatra.qzz.io';
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(ip)
+          .then(() => showToast('✅ IP panoya kopyalandı: ' + ip))
+          .catch(() => fallbackCopy(ip));
+      } else {
+        fallbackCopy(ip);
+      }
+    }
+    
     function fallbackCopy(text) {
       const textarea = document.createElement('textarea');
       textarea.value = text;
@@ -288,28 +948,40 @@
         document.execCommand('copy');
         showToast('✅ IP panoya kopyalandı: ' + text);
       } catch (err) {
-        showToast('❌ Kopyalama başarısız, IP: ' + text);
+        showToast('❌ Kopyalama başarısız: ' + text);
       }
       document.body.removeChild(textarea);
     }
-
-    function copyIP() {
-      const ip = 'oyna.pinatra.qzz.io';
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(ip)
-          .then(() => showToast('✅ IP panoya kopyalandı: ' + ip))
-          .catch(() => fallbackCopy(ip));
-      } else {
-        fallbackCopy(ip);
-      }
-    }
-      function openModal(id) {
+    
+    // Modal Functions
+    function openModal(id) {
       document.getElementById(id).style.display = 'flex';
     }
-
+    
     function closeModal() {
       document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
     }
+    
+    // Close modal on outside click
+    document.querySelectorAll('.modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+    });
+    
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href !== '#') {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      });
+    });
   </script>
 </body>
 </html>
