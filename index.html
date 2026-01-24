@@ -105,10 +105,12 @@
     .logo strong {
       font-size: 24px;
       font-weight: 800;
+      color: var(--primary); /* Fallback color */
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      display: inline-block;
     }
     
     nav {
@@ -267,10 +269,12 @@
     }
     
     h1 .gradient {
+      color: var(--primary); /* Fallback color */
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      display: inline-block;
     }
     
     .hero-subtitle {
@@ -731,7 +735,7 @@
         </div>
         <div class="stat-card">
           <div class="stat-icon">📦</div>
-          <div class="stat-value">1.16-1.21</div>
+          <div class="stat-value">1.16.5-1.21.11</div>
           <div class="stat-label">Desteklenen Sürümler</div>
         </div>
       </div>
@@ -762,16 +766,6 @@
         <p>Yardımsever ve eğlenceli oyunculardan oluşan büyüyen bir topluluk.</p>
       </div>
       <div class="feature-card">
-        <div class="feature-icon">🎁</div>
-        <h3>Özel Etkinlikler</h3>
-        <p>Haftalık turnuvalar, ödüllü yarışmalar ve özel günler.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">💬</div>
-        <h3>7/24 Destek</h3>
-        <p>Her an yardım alabilirsiniz, sorularınız için buradayız.</p>
-      </div>
-      <div class="feature-card">
         <div class="feature-icon">🔄</div>
         <h3>Düzenli Güncellemeler</h3>
         <p>Yeni içerikler, özellikler ve iyileştirmeler sürekli ekleniyor.</p>
@@ -789,12 +783,12 @@
     <div class="modes-grid">
       <div class="mode-card">
         <div class="mode-icon">🏰</div>
-        <h3>Survival SMP</h3>
+        <h3>SMP</h3>
         <p>Klasik hayatta kalma deneyimi. Kendi alanını kur, arkadaşlarınla oyna, büyük projeler inşa et ve maceraya atıl!</p>
       </div>
       <div class="mode-card">
         <div class="mode-icon">⚔️</div>
-        <h3>PvP Arena</h3>
+        <h3>Practice</h3>
         <p>Yeteneklerini test et! Farklı arena modlarında rakiplerine karşı savaş ve sıralamalarda yüksel.</p>
       </div>
     </div>
@@ -803,7 +797,7 @@
   <!-- Footer -->
   <footer>
     <div class="social-links">
-      <a href="#" title="Instagram">
+      <a href="https://www.instagram.com/pinatramc.tr/" target="_blank" title="Instagram">
         <i class="fab fa-instagram"></i>
       </a>
     </div>
