@@ -890,7 +890,7 @@
         const res = await fetch(`https://api.mcsrvstat.us/2/${SERVER_IP}`);
         const data = await res.json();
         
-        if (data.online) {
+        if (data.online && (data.players?.online ?? 0) > 0) {
           const online = data.players?.online ?? 0;
           const max = data.players?.max ?? '?';
           STATUS_EL.innerHTML = `<div class="status-dot"></div><span>Sunucu Aktif — ${online}/${max} oyuncu</span>`;
@@ -985,4 +985,3 @@
   </script>
 </body>
 </html>
-
