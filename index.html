@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pinatra SMP | Minecraft Sunucusu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top, #2b1d0e, #0b0703);
+      color: #fff;
+      min-height: 100vh;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+    nav a {
+      color: #ddd;
+      margin: 0 12px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    nav a:hover { color: #fff; }
+    .btn {
+      padding: 12px 22px;
+      border-radius: 14px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-green { background: #4ade80; color: #062e16; }
+    .btn-blue { background: #6366f1; color: #fff; }
+    .hero {
+      text-align: center;
+      padding: 90px 20px;
+    }
+    .status {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: rgba(34,197,94,0.15);
+      color: #4ade80;
+      margin-bottom: 30px;
+      font-weight: 600;
+    }
+    h1 {
+      font-size: 64px;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    h1 span:first-child { color: #fb923c; }
+    h1 span:last-child { color: #facc15; }
+    .subtitle {
+      max-width: 720px;
+      margin: 0 auto 40px;
+      color: #e5e7eb;
+      font-size: 18px;
+    }
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+    .ip-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: rgba(251,146,60,0.15);
+      border-radius: 16px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .ip-box code { color: #facc15; }
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #9ca3af;
+      font-size: 14px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(34,197,94,0.95);
+      color: #062e16;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-10px);
+    }
+      .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: #111827;
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+    }
+    .modal-content h2 { margin-bottom: 15px; }
+    .modal-content p { margin-bottom: 10px; color: #e5e7eb; }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>PINATRA SMP</strong>
+    <nav>
+      <a href="#" onclick="openModal('joinModal')">Nasıl Katılırım?</a>
+      <a href="#" onclick="openModal('rulesModal')">Kurallar</a>
+    </nav>
+    <button class="btn btn-green" onclick="copyIP()">Sunucuya Katıl</button>
+  </header>
+
+  <section class="hero">
+    <div id="serverStatus" class="status">⏳ Sunucu durumu kontrol ediliyor...</div>
+    <h1><span>PINATRA</span><br><span>SMP</span></h1>
+    <p class="subtitle">
+      Türkiye'nin en eğlenceli Minecraft sunucusu. Özel oyun modları, görevler ve güçlü bir topluluk seni bekliyor.
+    </p>
+    <div class="actions">
+      <button class="btn btn-green" onclick="copyIP()">Macereye Başla</button>
+      <a href="https://rapor.pinatra.qzz.io" target="_blank"><button class="btn btn-blue">Oyuncu Raporla</button></a>
+    </div>
+    <div class="ip-box" onclick="copyIP()" style="cursor:pointer">
+      Sunucu IP: <code>oyna.pinatra.qzz.io</code>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Pinatra SMP — Tüm Hakları Saklıdır
+    </footer>
+
+  <!-- Nasıl Katılırım Modal -->
+  <div id="joinModal" class="modal">
+    <div class="modal-content">
+      <h2>Nasıl Katılırım?</h2>
+      <p>1. Minecraft Java sürümünü aç</p>
+      <p>2. Çok Oyunculu → Sunucu Ekle</p>
+      <p>3. Sunucu IP: <strong>oyna.pinatra.qzz.io</strong></p>
+      <button class="btn btn-green" onclick="copyIP()">IP'yi Kopyala</button>
+      <button class="btn" onclick="closeModal()">Kapat</button>
+    </div>
+  </div>
+
+  <!-- Kurallar Modal -->
+  <div id="rulesModal" class="modal">
+    <div class="modal-content">
+      <h2>Sunucu Kuralları</h2>
+      <p>• Hile (hack, client, mod) kullanmak kesinlikle yasaktır.</p>
+      <p>• Küfür, hakaret, aşağılayıcı ve rahatsız edici konuşmalar yasaktır.</p>
+      <p>• Sunucudaki açıkları (bug) bilerek kullanmak veya yaymak yasaktır.</p>
+      <p>• Reklam yapmak veya link paylaşmak yetki olmadan yasaktır.</p>
+      <p>• Sohbeti spamlamak veya flood yapmak yasaktır.</p>
+      <p>• Yetkililere saygısızlık etmek yasaktır.</p>
+      <p>• Tehdit, korkutma veya taciz edici davranışlar yasaktır.</p>
+      <p><strong>Kurallara uymayan oyuncular uyarı, mute, kick veya ban cezası alabilir.</strong></p>
+      <button class="btn close-btn" onclick="closeModal()">Kapat</button>
+    </div>
+  </div>
+
+
+  <div id="toast" class="toast">✅ IP panoya kopyalandı: oyna.pinatra.qzz.io</div>
+
+  <script>
+    // === SUNUCU DURUM KONTROLÜ (Aternos uyumlu) ===
+    const SERVER_IP = 'oyna.pinatra.qzz.io';
+    const STATUS_EL = document.getElementById('serverStatus');
+
+    async function checkServerStatus() {
+      try {
+        const res = await fetch(`https://api.mcsrvstat.us/2/${SERVER_IP}`);
+        const data = await res.json();
+
+        if (data.online) {
+          const online = data.players?.online ?? 0;
+          const max = data.players?.max ?? '?';
+          STATUS_EL.textContent = `🟢 Sunucu Aktif — ${online}/${max} oyuncu`;
+          STATUS_EL.style.background = 'rgba(34,197,94,0.15)';
+          STATUS_EL.style.color = '#4ade80';
+        } else {
+          STATUS_EL.textContent = '🔴 Sunucu Kapalı';
+          STATUS_EL.style.background = 'rgba(239,68,68,0.15)';
+          STATUS_EL.style.color = '#f87171';
+        }
+      } catch (e) {
+        STATUS_EL.textContent = '⚠️ Sunucu durumu alınamadı';
+        STATUS_EL.style.background = 'rgba(234,179,8,0.15)';
+        STATUS_EL.style.color = '#fde047';
+      }
+    }
+
+    // Sayfa açılınca kontrol et
+    checkServerStatus();
+
+    // === IP KOPYALAMA SİSTEMİ ===
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    function fallbackCopy(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast('✅ IP panoya kopyalandı: ' + text);
+      } catch (err) {
+        showToast('❌ Kopyalama başarısız, IP: ' + text);
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function copyIP() {
+      const ip = 'oyna.pinatra.qzz.io';
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(ip)
+          .then(() => showToast('✅ IP panoya kopyalandı: ' + ip))
+          .catch(() => fallbackCopy(ip));
+      } else {
+        fallbackCopy(ip);
+      }
+    }
+      function openModal(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+    }
+  </script>
+</body>
+</html>
