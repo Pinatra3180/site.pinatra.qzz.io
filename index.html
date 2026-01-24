@@ -34,6 +34,8 @@
     }
     header strong {
       color: #111827;
+      font-size: 26px;
+      font-weight: 800;
     }
     nav a {
       color: #111827;
@@ -66,7 +68,8 @@
       max-width: 900px;
       border-radius: 24px;
       box-shadow: 0 25px 60px rgba(0,0,0,0.45);
-      animation: heroPop 1s ease-out 0.2s both;    }
+      animation: heroPop 1s ease-out 0.2s both;
+    }
     .status {
       display: inline-block;
       padding: 10px 18px;
@@ -76,19 +79,21 @@
       margin-bottom: 30px;
       font-weight: 700;
     }
-    hh1 {
+    h1 {
       font-size: 52px;
       line-height: 1.1;
       margin-bottom: 16px;
       color: #f9fafb;
-    }    h1 span:first-child { color: #fb923c; }
+    }
+    h1 span:first-child { color: #fb923c; }
     h1 span:last-child { color: #facc15; }
-    ..subtitle {
+    .subtitle {
       max-width: 640px;
       margin: 0 auto 30px;
       color: #e5e7eb;
       font-size: 16px;
-    }    .actions {
+    }
+    .actions {
       display: flex;
       justify-content: center;
       gap: 16px;
@@ -177,13 +182,16 @@
     <p class="subtitle">
       Türkiye'nin en eğlenceli Minecraft sunucusu. 2 adet oyun modu ve güçlü bir topluluk seni bekliyo
     </p>
-    <div class="ip-box" style="margin: 0 auto 30px; background: rgba(99,102,241,0.15)">Desteklenen Sürümler (Java): <code>1.16.5 – 1.21.11</code></div>
+    
     <div class="actions">
       <button class="btn btn-green" onclick="copyIP()">Macereye Başla</button>
       <a href="https://rapor.pinatra.qzz.io" target="_blank"><button class="btn btn-blue">Oyuncu Raporla</button></a>
     </div>
     <div class="ip-box" onclick="copyIP()" style="cursor:pointer">
       Sunucu IP: <code>oyna.pinatra.qzz.io</code>
+    </div>
+    <div class="ip-box" style="margin: 16px auto 30px; font-size: 14px; opacity: 0.9; background: rgba(99,102,241,0.12)">
+      Desteklenen Sürümler (Java): <code>1.16.5 – 1.21.11</code>
     </div>
   </section>
 
