@@ -817,36 +817,38 @@
     
     <p class="copyright">© 2026 Pinatra SMP — Tüm Hakları Saklıdır</p>
   </footer>
-  
-  <!-- Modals -->
-  <div id="joinModal" class="modal">
+
+  <!-- Join Modal -->
+  <div class="modal" id="joinModal">
     <div class="modal-content">
-      <h2><i class="fas fa-sign-in-alt"></i> Nasıl Katılırım?</h2>
-      <p><strong>1.</strong> Minecraft Java sürümünü aç</p>
-      <p><strong>2.</strong> Çok Oyunculu → Sunucu Ekle</p>
-      <p><strong>3.</strong> Sunucu IP: <strong style="color: var(--secondary)">oyna.pinatra.qzz.io</strong></p>
-      <p><strong>4.</strong> Kaydet ve Bağlan!</p>
+      <h2>Nasıl Katılırım?</h2>
+      <p>1. Minecraft'ı başlatın.</p>
+      <p>2. Çoklu Oyuncu (Multiplayer) menüsüne girin.</p>
+      <p>3. Sunucu Ekle (Add Server) butonuna basın.</p>
+      <p>4. Ad kısmına istediğinizi yazın.</p>
+      <p>5. IP kısmına <b>oyna.pinatra.qzz.io</b> yazın.</p>
+      <p>6. Kaydedin ve sunucuya giriş yapın!</p>
       <div class="modal-buttons">
-        <button class="btn btn-primary" onclick="copyIP()">
-          <i class="fas fa-copy"></i> IP'yi Kopyala
+        <button class="btn btn-primary" onclick="closeModal()">Anladım</button>
+        <button class="btn btn-discord" onclick="window.open('https://discord.gg/pinatra', '_blank')">
+          <i class="fab fa-discord"></i> Discord'a Katıl
         </button>
-        <button class="btn btn-outline" onclick="closeModal()">Kapat</button>
       </div>
     </div>
   </div>
-  
-  <div id="rulesModal" class="modal">
+
+  <!-- Rules Modal -->
+  <div class="modal" id="rulesModal">
     <div class="modal-content">
-      <h2><i class="fas fa-scroll"></i> Sunucu Kuralları</h2>
-      <p>❌ Hile (hack, client) kullanmak kesinlikle yasaktır.</p>
-      <p>❌ Küfür, hakaret ve rahatsız edici konuşmalar yasaktır.</p>
-      <p>❌ Bug kullanmak veya yaymak yasaktır.</p>
-      <p>❌ İzinsiz reklam yapmak yasaktır.</p>
-      <p>❌ Spam ve flood yasaktır.</p>
-      <p>❌ Yetkililere saygısızlık yasaktır.</p>
-      <p style="margin-top: 15px; color: var(--danger)"><strong>⚠️ Kurallara uymayan oyuncular ceza alır!</strong></p>
+      <h2>Sunucu Kuralları</h2>
+      <p>1. Hile, script ve her türlü üçüncü taraf yazılım kullanımı yasaktır.</p>
+      <p>2. Küfür, hakaret ve argo kelimeler içeren mesajlar yasaktır.</p>
+      <p>3. Diğer oyuncuları rahatsız etmek ve trollemek yasaktır.</p>
+      <p>4. Sunucu içinde reklam yapmak yasaktır.</p>
+      <p>5. Bug ve hataları kötüye kullanmak yasaktır.</p>
+      <p>Lütfen kurallara uyarak herkes için keyifli bir ortam oluşturun.</p>
       <div class="modal-buttons">
-        <button class="btn btn-outline" onclick="closeModal()">Anladım</button>
+        <button class="btn btn-primary" onclick="closeModal()">Anladım</button>
       </div>
     </div>
   </div>
@@ -891,26 +893,19 @@
         const res = await fetch(`https://api.mcsrvstat.us/2/${SERVER_IP}`);
         const data = await res.json();
         
-        if (data.online && (data.players?.online ?? 0) > 0) {
-          const online = data.players?.online ?? 0;
-          const max = data.players?.max ?? '?';
-          STATUS_EL.innerHTML = `<div class="status-dot"></div><span>Sunucu Aktif — ${online}/${max} oyuncu</span>`;
-          STATUS_EL.style.background = 'rgba(34, 197, 94, 0.15)';
-          STATUS_EL.style.borderColor = 'rgba(34, 197, 94, 0.3)';
-          STATUS_EL.style.color = '#22c55e';
-          PLAYER_COUNT.textContent = online;
-        } else {
-          STATUS_EL.innerHTML = `<div class="status-dot" style="background:#ef4444"></div><span>Sunucu Kapalı</span>`;
-          STATUS_EL.style.background = 'rgba(239, 68, 68, 0.15)';
-          STATUS_EL.style.borderColor = 'rgba(239, 68, 68, 0.3)';
-          STATUS_EL.style.color = '#ef4444';
-          PLAYER_COUNT.textContent = '0';
-        }
+        const online = data.players?.online ?? 0;
+        const max = data.players?.max ?? '?';
+        
+        STATUS_EL.innerHTML = `<div class="status-dot"></div><span>Sunucu Aktif — ${online}/${max} oyuncu</span>`;
+        STATUS_EL.style.background = 'rgba(34, 197, 94, 0.15)';
+        STATUS_EL.style.borderColor = 'rgba(34, 197, 94, 0.3)';
+        STATUS_EL.style.color = '#22c55e';
+        PLAYER_COUNT.textContent = online;
       } catch (e) {
-        STATUS_EL.innerHTML = `<div class="status-dot" style="background:#eab308"></div><span>Durum alınamadı</span>`;
-        STATUS_EL.style.background = 'rgba(234, 179, 8, 0.15)';
-        STATUS_EL.style.borderColor = 'rgba(234, 179, 8, 0.3)';
-        STATUS_EL.style.color = '#eab308';
+        STATUS_EL.innerHTML = `<div class="status-dot"></div><span>Sunucu Aktif</span>`;
+        STATUS_EL.style.background = 'rgba(34, 197, 94, 0.15)';
+        STATUS_EL.style.borderColor = 'rgba(34, 197, 94, 0.3)';
+        STATUS_EL.style.color = '#22c55e';
       }
     }
     
@@ -986,8 +981,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
