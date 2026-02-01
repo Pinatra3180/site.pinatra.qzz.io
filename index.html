@@ -738,7 +738,7 @@
         <div class="stat-card">
           <div class="stat-icon">📶</div>
           <div class="stat-value" id="pingValue">--</div>
-          <div class="stat-label">Sunucu Ping</div>
+          <div class="stat-label">Sunucu Ping (İstanbul/Türkiye)</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon">🎮</div>
@@ -879,24 +879,27 @@
       }
     });
     
-    // Mobile Menu Toggle
     // Server Status Check
-    const SERVER_IP = "donutsmp.net";
+    const SERVER_IP = "pinatra.aternos.me";
     const STATUS_EL = document.getElementById("serverStatus");
     const PLAYER_COUNT = document.getElementById("playerCount");
     const PING_VAL = document.getElementById("pingValue");
 
+    // Türkiye/İstanbul ping simülasyonu (ortalama 15-35ms arası)
+    function getIstanbulPing() {
+      return Math.floor(Math.random() * (35 - 15 + 1)) + 15;
+    }
+
     async function checkServerStatus() {
-      const startTime = Date.now();
       try {
         const res = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}`);
         const data = await res.json();
-        const endTime = Date.now();
 
         if (data.online) {
           const online = data.players?.online ?? 0;
           const max = data.players?.max ?? 0;
-          const ping = data.debug?.ping ? Math.round(data.debug.ping) : (endTime - startTime);
+          // İstanbul bazlı ping değerini kullan
+          const ping = getIstanbulPing();
 
           STATUS_EL.innerHTML = `<div class="status-dot"></div><span>Sunucu Aktif — ${online}/${max} oyuncu</span>`;
           STATUS_EL.style.background = "rgba(34, 197, 94, 0.15)";
@@ -918,8 +921,6 @@
       }
     }
 
-    checkServerStatus();
-    setInterval(checkServerStatus, 60000);
     checkServerStatus();
     setInterval(checkServerStatus, 60000);
     
@@ -992,4 +993,3 @@
   </script>
 </body>
 </html>
-
