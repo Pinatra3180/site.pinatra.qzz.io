@@ -736,14 +736,19 @@
           <div class="stat-label">Aktif Oyuncu</div>
         </div>
         <div class="stat-card">
+          <div class="stat-icon">📶</div>
+          <div class="stat-value" id="pingValue">--</div>
+          <div class="stat-label">Sunucu Ping</div>
+        </div>
+        <div class="stat-card">
           <div class="stat-icon">🎮</div>
           <div class="stat-value">2</div>
           <div class="stat-label">Oyun Modu</div>
         </div>
         <div class="stat-card">
           <div class="stat-icon">📦</div>
-          <div class="stat-value">1.16.5-1.21.11</div>
-          <div class="stat-label">Desteklenen Sürümler</div>
+          <div class="stat-value">1.16.5-1.21.1</div>
+          <div class="stat-label">Sürümler</div>
         </div>
       </div>
     </div>
@@ -830,9 +835,6 @@
       <p>6. Kaydedin ve sunucuya giriş yapın!</p>
       <div class="modal-buttons">
         <button class="btn btn-primary" onclick="closeModal()">Anladım</button>
-        <button class="btn btn-discord" onclick="window.open('https://discord.gg/pinatra', '_blank')">
-          <i class="fab fa-discord"></i> Discord'a Katıl
-        </button>
       </div>
     </div>
   </div>
@@ -878,37 +880,46 @@
     });
     
     // Mobile Menu Toggle
-    function toggleMobileMenu() {
-      const nav = document.getElementById('nav');
-      nav.classList.toggle('active');
-    }
-    
     // Server Status Check
-    const SERVER_IP = 'pinatra.aternos.me';
-    const STATUS_EL = document.getElementById('serverStatus');
-    const PLAYER_COUNT = document.getElementById('playerCount');
-    
+    const SERVER_IP = "oyna.pinatra.qzz.io";
+    const STATUS_EL = document.getElementById("serverStatus");
+    const PLAYER_COUNT = document.getElementById("playerCount");
+    const PING_VAL = document.getElementById("pingValue");
+
     async function checkServerStatus() {
+      const startTime = Date.now();
       try {
-        const res = await fetch(`https://api.mcsrvstat.us/2/${SERVER_IP}`);
+        const res = await fetch(`https://api.mcsrvstat.us/3/${SERVER_IP}`);
         const data = await res.json();
-        
-        const online = data.players?.online ?? 0;
-        const max = data.players?.max ?? '?';
-        
-        STATUS_EL.innerHTML = `<div class="status-dot"></div><span>Sunucu Aktif — ${online}/${max} oyuncu</span>`;
-        STATUS_EL.style.background = 'rgba(34, 197, 94, 0.15)';
-        STATUS_EL.style.borderColor = 'rgba(34, 197, 94, 0.3)';
-        STATUS_EL.style.color = '#22c55e';
-        PLAYER_COUNT.textContent = online;
+        const endTime = Date.now();
+
+        if (data.online) {
+          const online = data.players?.online ?? 0;
+          const max = data.players?.max ?? 0;
+          const ping = data.debug?.ping ? Math.round(data.debug.ping) : (endTime - startTime);
+
+          STATUS_EL.innerHTML = `<div class="status-dot"></div><span>Sunucu Aktif — ${online}/${max} oyuncu</span>`;
+          STATUS_EL.style.background = "rgba(34, 197, 94, 0.15)";
+          STATUS_EL.style.borderColor = "rgba(34, 197, 94, 0.3)";
+          STATUS_EL.style.color = "#22c55e";
+          PLAYER_COUNT.textContent = online;
+          PING_VAL.textContent = ping + "ms";
+        } else {
+          STATUS_EL.innerHTML = `<div class="status-dot" style="background: var(--danger)"></div><span>Sunucu Kapalı</span>`;
+          STATUS_EL.style.background = "rgba(239, 68, 68, 0.15)";
+          STATUS_EL.style.borderColor = "rgba(239, 68, 68, 0.3)";
+          STATUS_EL.style.color = "var(--danger)";
+          PLAYER_COUNT.textContent = "0";
+          PING_VAL.textContent = "--";
+        }
       } catch (e) {
-        STATUS_EL.innerHTML = `<div class="status-dot"></div><span>Sunucu Aktif</span>`;
-        STATUS_EL.style.background = 'rgba(34, 197, 94, 0.15)';
-        STATUS_EL.style.borderColor = 'rgba(34, 197, 94, 0.3)';
-        STATUS_EL.style.color = '#22c55e';
+        STATUS_EL.innerHTML = `<div class="status-dot"></div><span>Durum Alınamadı</span>`;
+        PING_VAL.textContent = "--";
       }
     }
-    
+
+    checkServerStatus();
+    setInterval(checkServerStatus, 60000);
     checkServerStatus();
     setInterval(checkServerStatus, 60000);
     
